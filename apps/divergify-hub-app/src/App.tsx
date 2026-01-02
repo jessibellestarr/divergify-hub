@@ -14,7 +14,7 @@ import { NotFound } from "./routes/NotFound";
 
 export function App() {
   return (
-    <BrowserRouter basename="/app">
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<Shell />}>
           <Route index element={<Today />} />
