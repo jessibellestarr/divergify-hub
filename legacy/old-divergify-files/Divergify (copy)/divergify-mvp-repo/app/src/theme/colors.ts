@@ -1,0 +1,1 @@
+export const colors = { bg:'#0b1217', bg2:'#12324a', text:'#dbffe3', textDim:'#9beab3', accent:'#2ecc71', darkInk:'#05230f' };

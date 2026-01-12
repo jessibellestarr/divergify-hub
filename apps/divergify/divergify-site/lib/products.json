@@ -1,0 +1,31 @@
+[
+  {
+    "id": "baseline-booster",
+    "name": "Baseline Booster",
+    "price": 0,
+    "priceCents": 0,
+    "currency": "USD",
+    "description": "Free starter pack to calm the chaos.",
+    "image": "/images/baseline.png"
+  },
+  {
+    "id": "focus-lock",
+    "name": "Focus Lock",
+    "price": 4.99,
+    "priceCents": 499,
+    "currency": "USD",
+    "description": "Beat-your-baseline distraction blocker.",
+    "image": "/images/focus-lock.png",
+    "stripePriceId": "price_placeholder_focus"
+  },
+  {
+    "id": "pro-suite",
+    "name": "Divergify Pro",
+    "price": 14.99,
+    "priceCents": 1499,
+    "currency": "USD",
+    "description": "Calendar, routes, shopping mode, nudges, the works.",
+    "image": "/images/pro.png",
+    "stripePriceId": "price_placeholder_pro"
+  }
+]

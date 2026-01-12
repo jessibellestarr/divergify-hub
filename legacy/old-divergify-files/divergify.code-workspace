@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../divergify"
+		},
+		{
+			"name": "Divergify-core",
+			"path": "Divergify-core"
+		}
+	],
+	"settings": {
+		"github.copilot.nextEditSuggestions.enabled": true
+	}
+}

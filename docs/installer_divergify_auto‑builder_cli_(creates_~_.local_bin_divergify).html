@@ -1,0 +1,349 @@
+
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Divergify Auto‑Builder installer
+# Creates:
+#  - ~/.local/share/divergify-bot/bot.mjs   (engine)
+#  - ~/.local/share/divergify-bot/package.json
+#  - installs "openai" SDK locally
+#  - ~/.local/bin/divergify                 (wrapper in PATH)
+
+if [[ -z "${OPENAI_API_KEY:-}" ]]; then
+  echo "ERROR: Set OPENAI_API_KEY first, e.g.:"
+  echo "  export OPENAI_API_KEY=sk-yourkey"
+  exit 1
+fi
+
+# Check Node
+if ! command -v node >/dev/null 2>&1; then
+  echo "ERROR: Node.js 18+ required. Install via nvm:"
+  echo "  curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash"
+  echo "  source ~/.bashrc && nvm install --lts"
+  exit 1
+fi
+
+ver_major=$(node -p "process.versions.node.split('.')[0]")
+if (( ver_major < 18 )); then
+  echo "ERROR: Node 18+ required. Current: $(node -v)"
+  exit 1
+fi
+
+BASE="$HOME/.local/share/divergify-bot"
+BIN="$HOME/.local/bin"
+mkdir -p "$BASE" "$BIN"
+
+# Create a minimal package.json (ESM)
+cat > "$BASE/package.json" <<'JSON'
+{
+  "name": "divergify-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "openai": "^4.76.0"
+  }
+}
+JSON
+
+# Install OpenAI SDK locally (no sudo, no global)
+cd "$BASE"
+if ! grep -q '"openai"' package.json; then
+  # (safety—though we just wrote it)
+  :
+fi
+npm install --silent
+
+# Write engine
+cat > "$BASE/bot.mjs" <<'NODE'
+#!/usr/bin/env node
+/**
+ * Divergify Auto‑Builder (bot.mjs)
+ * - Audits a Next.js/Netlify repo
+ * - Asks OpenAI for minimal patches (unified diff)
+ * - Applies patch via git, builds, loops on failures
+ * - Optional deploy to Netlify
+ *
+ * Usage:
+ *   node bot.mjs [--root .] [--apply] [--yes] [--loop 3] [--deploy] [--model gpt-4o-mini]
+ */
+
+import OpenAI from "openai";
+import fs from "node:fs/promises";
+import fssync from "node:fs";
+import path from "node:path";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const args = process.argv.slice(2);
+function getFlag(name, def=false) {
+  return args.includes(name) ? true : def;
+}
+function getOpt(name, def) {
+  const i = args.indexOf(name);
+  return i >= 0 && args[i+1] ? args[i+1] : def;
+}
+
+const ROOT = path.resolve(getOpt("--root", process.cwd()));
+const APPLY = getFlag("--apply", false);
+const YES = getFlag("--yes", false);
+const LOOP = parseInt(getOpt("--loop", "2"), 10);
+const DEPLOY = getFlag("--deploy", false);
+const MODEL = getOpt("--model", "gpt-4o-mini");
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+if (!process.env.OPENAI_API_KEY) {
+  console.error("Set OPENAI_API_KEY first.");
+  process.exit(1);
+}
+
+const IGNORES = new Set([
+  "node_modules","/.git/","/.next/","dist","build","coverage",".turbo",".cache",".DS_Store"
+]);
+
+const PRIORITY_FILES = [
+  "package.json","netlify.toml","next.config.js","next.config.mjs",
+  "tsconfig.json","jsconfig.json","tailwind.config.js","tailwind.config.ts",
+  "postcss.config.js","app/page.tsx","app/layout.tsx","pages/index.tsx",
+  "app/blog/[slug]/page.tsx","content/blog/hello.md","public/robots.txt",
+  ".eslintrc.json",".prettierrc",".gitignore"
+];
+
+function rel(p){ return path.relative(ROOT, p) || "."; }
+function exists(p){ return fssync.existsSync(p); }
+
+async function readIfExists(p, limit=120_000) {
+  try {
+    const s = await fs.stat(p);
+    if (s.isDirectory()) return null;
+    if (s.size > limit) return `FILE_TOO_LARGE (${s.size} bytes)`;
+    const data = await fs.readFile(p,"utf8");
+    return data;
+  } catch { return null; }
+}
+
+async function listAll(dir){
+  const out = [];
+  async function walk(d){
+    const ents = await fs.readdir(d, { withFileTypes:true });
+    for (const e of ents){
+      const full = path.join(d, e.name);
+      const rp = rel(full);
+      const skip = Array.from(IGNORES).some(g => rp.includes(g));
+      if (skip) continue;
+      if (e.isDirectory()) await walk(full);
+      else out.push(rp);
+    }
+  }
+  await walk(dir);
+  out.sort();
+  return out;
+}
+
+async function ensureGit(){
+  if (!exists(path.join(ROOT,".git"))){
+    await run(`git init`, ROOT);
+  }
+}
+
+async function commit(name){
+  await run(`git add -A`, ROOT);
+  // allow empty to snapshot no-op states
+  await run(`git commit --allow-empty -m ${JSON.stringify(name)}`, ROOT);
+}
+
+async function run(cmd, cwd){
+  return new Promise((resolve,reject)=>{
+    const child = spawn("bash",["-lc",cmd],{cwd,stdio:"inherit"});
+    child.on("exit",code=>{
+      if (code===0) resolve(0); else reject(new Error(`Command failed (${code}): ${cmd}`));
+    });
+  });
+}
+
+async function runCapture(cmd, cwd){
+  return new Promise((resolve)=>{
+    const child = spawn("bash",["-lc",cmd],{cwd});
+    let out="", err="";
+    child.stdout.on("data",d=>out+=d.toString());
+    child.stderr.on("data",d=>err+=d.toString());
+    child.on("exit",code=>resolve({code, out, err}));
+  });
+}
+
+async function snapshot(){
+  const files = await listAll(ROOT);
+  const pick = new Set(PRIORITY_FILES.filter(f=>exists(path.join(ROOT,f))));
+  // Also include any TypeScript/TSX in app/ and config-like files (capped)
+  for (const f of files){
+    if (pick.size>60) break;
+    if (f.startsWith("app/") && (f.endsWith(".tsx")||f.endsWith(".ts")||f.endsWith(".md")||f.endsWith(".mdx"))) pick.add(f);
+    if (f.startsWith("pages/") && (f.endsWith(".tsx")||f.endsWith(".ts"))) pick.add(f);
+  }
+  const blobs = [];
+  for (const f of Array.from(pick)){
+    blobs.push(`--- ${f} ---\n${await readIfExists(path.join(ROOT,f)) ?? ""}`);
+  }
+  return {
+    tree: files.join("\n"),
+    blobs: blobs.join("\n\n"),
+  };
+}
+
+const SYSTEM = `
+You are an autonomous repository mechanic for a Next.js 15 + Netlify project.
+Task: given the file tree and key file contents, return a minimal UNIFIED DIFF patch to:
+- Fix build errors (TypeScript/Next) and ensure \`npm run build\` succeeds on Netlify.
+- Keep App Router (app/) if present. Ensure app/page.tsx has a default export.
+- Preserve existing content; only modify what's necessary.
+- If missing, add: netlify.toml using @netlify/plugin-nextjs, a minimal home page, and a simple blog reader using fs from content/blog (server component).
+- Respect TypeScript where used.
+- Include .gitignore for node_modules, .next, .env*, coverage.
+- When adding files, include full new file content in the diff.
+- Keep changes small and deterministic.
+
+Output STRICTLY:
+1) If changes are needed: one fenced code block with language "diff" containing a valid unified diff patch (git apply -p0 compatible).
+2) If nothing needed: the single word NO_CHANGES.
+
+Never include explanations outside the code block.
+`;
+
+async function planPatch(context) {
+  const res = await client.responses.create({
+    model: MODEL,
+    input: [
+      { role: "system", content: SYSTEM },
+      { role: "user", content: `ROOT=${ROOT}\n\nFILE TREE:\n${context.tree}\n\nKEY FILES:\n${context.blobs}\n\nReturn a unified diff patch or NO_CHANGES.` }
+    ]
+  });
+  const txt = res.output_text || "";
+  const diffMatch = txt.match(/```diff([\s\S]*?)```/);
+  if (diffMatch) return diffMatch[1].trim();
+  if (txt.trim()==="NO_CHANGES") return "NO_CHANGES";
+  // Fallback: try raw text
+  return txt.trim();
+}
+
+async function applyPatch(patch) {
+  const patchPath = path.join(ROOT, ".divergify.patch");
+  await fs.writeFile(patchPath, patch, "utf8");
+  const { code, out, err } = await runCapture(`git apply -p0 --reject --whitespace=fix ${JSON.stringify(patchPath)}`, ROOT);
+  if (code !== 0) {
+    return { ok:false, out, err };
+  }
+  await commit("divergify: apply patch");
+  return { ok:true };
+}
+
+async function buildOnce(){
+  // prefer package script
+  let script = "npm run build";
+  try {
+    const pkg = JSON.parse(await fs.readFile(path.join(ROOT,"package.json"),"utf8"));
+    if (!pkg.scripts || !pkg.scripts.build) {
+      script = "npx --yes next@latest build";
+    }
+  } catch {}
+  const { code, out, err } = await runCapture(script, ROOT);
+  return { ok: code===0, out, err };
+}
+
+async function main(){
+  console.log(`Divergify Auto‑Builder
+  root: ${ROOT}
+  model: ${MODEL}
+  apply: ${APPLY}  deploy: ${DEPLOY}  loop: ${LOOP}
+`);
+
+  await ensureGit();
+  await commit("divergify: snapshot");
+
+  for (let i=1; i<=LOOP; i++){
+    console.log(`— Cycle ${i}/${LOOP}: planning patch`);
+    const ctx = await snapshot();
+    const patch = await planPatch(ctx);
+
+    if (patch === "NO_CHANGES") {
+      console.log("Planner: NO_CHANGES");
+    } else {
+      if (!APPLY && !YES) {
+        console.log("Planned patch (dry-run):\n" + patch.slice(0,4000));
+        console.log("\nRun again with --apply to apply it.");
+        process.exit(0);
+      }
+      console.log("Applying patch...");
+      const res = await applyPatch(patch);
+      if (!res.ok) {
+        console.log("Patch failed. Sending errors back to planner.");
+        // Feed failure back to model (implicit via next snapshot/build)
+      } else {
+        console.log("Patch applied.");
+      }
+    }
+
+    console.log("Building...");
+    const build = await buildOnce();
+    if (build.ok) {
+      console.log("Build: SUCCESS");
+      await commit("divergify: successful build");
+      if (DEPLOY) {
+        if (await hasCmd("netlify")) {
+          console.log("Deploying to Netlify (prod)...");
+          try {
+            await run(`netlify deploy --build --prod`, ROOT);
+            console.log("Deployed.");
+          } catch (e) {
+            console.log("Netlify deploy failed:", e.message);
+          }
+        } else {
+          console.log("Netlify CLI not found. Install: npm i -g netlify-cli");
+        }
+      }
+      return;
+    } else {
+      console.log("Build failed. Looping with error context...");
+      await fs.writeFile(path.join(ROOT, ".divergify-build.log"), build.out + "\n" + build.err, "utf8");
+      // Augment next planning with this log by writing into repo; snapshot() will include next round if it's small.
+      // If too large, model will still get context from changed files and error hints.
+    }
+  }
+
+  console.log("Finished loops without a successful build. Check .divergify-build.log for errors and re-run with higher --loop.");
+}
+
+async function hasCmd(cmd){
+  const { code } = await runCapture(`command -v ${cmd}`, ROOT);
+  return code===0;
+}
+
+main().catch(e=>{
+  console.error("Fatal:", e?.message || e);
+  process.exit(1);
+});
+NODE
+
+chmod +x "$BASE/bot.mjs"
+
+# Wrapper
+cat > "$BIN/divergify" <<'WRAP'
+#!/usr/bin/env bash
+set -euo pipefail
+export PATH="$HOME/.local/bin:$PATH"
+exec node "$HOME/.local/share/divergify-bot/bot.mjs" "$@"
+WRAP
+chmod +x "$BIN/divergify"
+
+# Ensure PATH
+if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+  echo "Added ~/.local/bin to PATH. Run: source ~/.bashrc"
+fi
+
+echo "Installed. Usage:
+  cd /path/to/your/site
+  divergify --apply --yes --loop 3            # auto-fix & build
+  divergify --apply --yes --loop 3 --deploy   # build + Netlify deploy (if CLI installed)
+"

@@ -1,0 +1,22 @@
+{
+  "short_name": "Divergify",
+  "name": "Divergify Beta Companion",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "description": "Neurodivergent-friendly PWA mirror of the Divergify beta app.",
+  "icons": [
+    {
+      "src": "https://divergify.app/logo_transparent_small.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512.png?text=Divergify",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

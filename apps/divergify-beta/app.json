@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Divergify Beta",
+    "slug": "divergify-beta",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "divergify",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#050505",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "app.divergify.beta"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "manifestPath": "./web/manifest.json",
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "googleMapsApiKey": "AIzaSyD-Your-Free-Key-Here"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}

@@ -1,0 +1,258 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Divergify//14-Day Sprint//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:cc599741-fca2-4b3f-9d59-7df8c37232a0@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 1 – Foundation
+DTSTART;TZID=America/New_York:20250929T090000
+DTEND;TZID=America/New_York:20250929T110000
+DESCRIPTION:Checklist:\n- 90 mins: test landing page + email form\n- List every bug/frustration into a 'Fix List' doc\n- Create 'Fix List' in Drive
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:cda9faa5-1b91-4e19-ae51-4c71d7c891a8@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 2 – Core App Tasks
+DTSTART;TZID=America/New_York:20250930T090000
+DTEND;TZID=America/New_York:20250930T110000
+DESCRIPTION:Checklist:\n- 2 hrs: stabilize Expo/React Native environment\n- Run one test build on phone (even if it crashes)
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:f022363d-7fe8-4bef-b243-ba60a3c86e2d@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 3 – Content Build
+DTSTART;TZID=America/New_York:20251001T090000
+DTEND;TZID=America/New_York:20251001T110000
+DESCRIPTION:Checklist:\n- Draft 3 Divergify dictionary entries\n- Create 1 graphic for merch or social
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:b770521e-ed06-4afa-accd-4fc5b1e9fd83@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 4 – Backend & Structure
+DTSTART;TZID=America/New_York:20251002T090000
+DTEND;TZID=America/New_York:20251002T110000
+DESCRIPTION:Checklist:\n- 2 hrs: research calendar/reminder approach for v1\n- Decide: must-have v1 vs later add-ons
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:d28ce81b-6b36-47c1-ad72-756121723ab3@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 5 – Marketing Prep
+DTSTART;TZID=America/New_York:20251003T090000
+DTEND;TZID=America/New_York:20251003T110000
+DESCRIPTION:Checklist:\n- Write 3-part 'Welcome to Divergify' email sequence\n- 30 mins: brainstorm TikTok ideas, save notes
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:5fe54b57-16c2-4f7a-afea-0dde7eb709bc@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 6 – Design Focus
+DTSTART;TZID=America/New_York:20251004T090000
+DTEND;TZID=America/New_York:20251004T110000
+DESCRIPTION:Checklist:\n- 1 hr: Canva—logo variants, merch mockups, app icon\n- 30–60 mins: update landing page visuals
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:a25ffceb-2500-4a45-b412-1236e2bfe6a3@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 7 – Reflection + Push
+DTSTART;TZID=America/New_York:20251005T090000
+DTEND;TZID=America/New_York:20251005T110000
+DESCRIPTION:Checklist:\n- Journal 10 mins: 'Biggest win this week'\n- Review app progress: open/load/screens?\n- Send daughters weekly text ❤️
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:6f31b75a-a020-47d5-8720-2fc6e7d9da02@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 8 – Tech Block
+DTSTART;TZID=America/New_York:20251006T090000
+DTEND;TZID=America/New_York:20251006T110000
+DESCRIPTION:Checklist:\n- 2 hrs: app navigation (Sidekick → Daily Tasks → Settings)
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:840effe0-1bac-48f5-b3a2-fab7f2ed7567@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 9 – Community & Content
+DTSTART;TZID=America/New_York:20251007T090000
+DTEND;TZID=America/New_York:20251007T110000
+DESCRIPTION:Checklist:\n- Post or comment once about Divergify\n- Draft 2 social captions or a short blog post\n- Add 1 new subscriber contact
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:99777392-3945-48a1-b4b0-5457d245a6b0@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 10 – Calendar System Build
+DTSTART;TZID=America/New_York:20251008T090000
+DTEND;TZID=America/New_York:20251008T110000
+DESCRIPTION:Checklist:\n- 90 mins: scheduling/reminders—show mock calendar screen\n- Note blockers for real notifications later
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:a560a33c-498d-4882-981a-37ed18182b88@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 11 – Merch/Revenue Prep
+DTSTART;TZID=America/New_York:20251009T090000
+DTEND;TZID=America/New_York:20251009T110000
+DESCRIPTION:Checklist:\n- Upload 1 product into Printify and preview\n- Write product description
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:e8b9de88-e8cc-4339-9aac-27b706251ac7@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 12 – Clean + Organize
+DTSTART;TZID=America/New_York:20251010T090000
+DTEND;TZID=America/New_York:20251010T110000
+DESCRIPTION:Checklist:\n- Tidy workspace; commit/save app files\n- Back up to Drive; update task tracker
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:ccf1920b-1e26-43da-9734-a58a7f62d418@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 13 – Creative Sprint
+DTSTART;TZID=America/New_York:20251011T090000
+DTEND;TZID=America/New_York:20251011T110000
+DESCRIPTION:Checklist:\n- Write 2 dictionary entries\n- Design 1 merch piece; mock how it looks in‑app
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:b868285c-9d70-4365-9352-62088ec91595@divergify
+DTSTAMP:20250928T191212Z
+SUMMARY:Divergify Sprint — Day 14 – Reflection + Reset
+DTSTART;TZID=America/New_York:20251012T090000
+DTEND;TZID=America/New_York:20251012T110000
+DESCRIPTION:Checklist:\n- Review what's stuck vs flowing\n- Adjust next 14‑day sprint plan\n- Send daughters weekly text ❤️
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Start now
+TRIGGER:-PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

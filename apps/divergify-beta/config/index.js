@@ -1,0 +1,4 @@
+import Constants from 'expo-constants';
+
+export const GOOGLE_MAPS_API_KEY =
+  Constants?.expoConfig?.extra?.googleMapsApiKey ?? 'AIzaSyD-Your-Free-Key-Here';

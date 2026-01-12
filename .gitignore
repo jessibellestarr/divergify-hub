@@ -3,6 +3,21 @@ active-site/
 # Usual noise
 .DS_Store
 node_modules/
+**/node_modules/
 dist/
+.netlify/
+**/.netlify/
+.local-chromium/
+**/.local-chromium/
+.expo/
+**/.expo/
+.logs/
+**/.logs/
+.pids/
+**/.pids/
+venv/
+**/venv/
 .env
 .env.*
+legacy.zip
+*.log
