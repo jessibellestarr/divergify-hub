@@ -9,6 +9,7 @@ import CalendarScreen from './screens/calendarscreen';
 import MapsScreen from './screens/mapsscreen';
 import ShoppingScreen from './screens/shoppingscreen';
 import BlockerScreen from './screens/blockerscreen';
+import HubScreen from './screens/hubscreen';
 import NudgesScreen from './screens/nudgesscreen';
 import SidekicksScreen from './screens/sidekicksscreen';
 import { colors } from './constants/colors';
@@ -33,6 +34,7 @@ const tabIcons = {
   Shopping: 'cart',
   Blocker: 'stopwatch',
   Nudges: 'sparkles',
+  Hub: 'home',
   Sidekicks: 'chatbubbles',
 };
 
@@ -59,6 +61,7 @@ export default function App() {
         <Tab.Screen name="Calendar" component={CalendarScreen} />
         <Tab.Screen name="Maps" component={MapsScreen} />
         <Tab.Screen name="Shopping" component={ShoppingScreen} />
+        <Tab.Screen name="Hub" component={HubScreen} options={{ title: 'The Hub' }} />
         <Tab.Screen
           name="Blocker"
           component={BlockerScreen}
