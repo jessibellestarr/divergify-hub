@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { Capacitor } from "@capacitor/core";
+import { SpeechRecognition } from "@capgo/capacitor-speech-recognition";
 import { Link } from "react-router-dom";
 import { sortWithAi } from "../shared/aiClient";
 import { sortBrainDumpLocally, type BrainDumpBuckets } from "../shared/brainDump";
@@ -104,6 +106,7 @@ export function BrainDump() {
   const [isListening, setIsListening] = useState(false);
 
   const speechCtor = useMemo(() => getSpeechRecognitionCtor(), []);
+  const usesNativeSpeech = Capacitor.isNativePlatform();
 
   const projectOptions = useMemo(() => {
     const values = new Set<string>(["Inbox"]);
@@ -126,7 +129,7 @@ export function BrainDump() {
   );
 
   useEffect(() => {
-    if (!speechCtor || !isListening) return undefined;
+    if (usesNativeSpeech || !speechCtor || !isListening) return undefined;
 
     const recognition = new speechCtor();
     recognition.continuous = true;
@@ -159,7 +162,68 @@ export function BrainDump() {
     return () => {
       recognition.stop();
     };
-  }, [isListening, speechCtor]);
+  }, [isListening, speechCtor, usesNativeSpeech]);
+
+  const appendTranscript = (transcript: string) => {
+    const cleaned = transcript.trim();
+    if (!cleaned) return;
+
+    setSourceText((current) => {
+      const spacer = current.trim() ? "\n" : "";
+      return `${current}${spacer}${cleaned}`.trim();
+    });
+  };
+
+  const toggleVoiceCapture = async () => {
+    setStatus(null);
+
+    if (!usesNativeSpeech) {
+      if (!speechCtor) {
+        setStatus("Voice input is not available in this browser. On a phone, you can also use the microphone on your keyboard.");
+        return;
+      }
+
+      setIsListening((current) => !current);
+      return;
+    }
+
+    if (isListening) {
+      await SpeechRecognition.stop().catch(() => undefined);
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const permission = await SpeechRecognition.requestPermissions();
+      if (permission.speechRecognition !== "granted") {
+        setStatus("Microphone permission is required for voice input. You can allow it in the app permissions and try again.");
+        return;
+      }
+
+      const availability = await SpeechRecognition.available();
+      if (!availability.available) {
+        setStatus("Speech recognition is not available on this device. You can still use the microphone on your phone keyboard.");
+        return;
+      }
+
+      setIsListening(true);
+      const result = await SpeechRecognition.start({
+        language: "en-US",
+        maxResults: 3,
+        popup: true,
+        partialResults: false,
+        prompt: "Dump it. Messy is allowed."
+      });
+      const transcript = result.matches?.[0] ?? "";
+      appendTranscript(transcript);
+      setStatus(transcript ? "Voice added to your Brain Dump." : "I did not catch anything. Tap the microphone and try again.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      setStatus(`Voice input stopped${message ? `: ${message}` : "."}`);
+    } finally {
+      setIsListening(false);
+    }
+  };
 
   const untangle = async () => {
     const text = sourceText.trim();
@@ -281,27 +345,30 @@ export function BrainDump() {
             <p className="p">No cleanup first. Speak or type the ugly version and let the app do the sorting.</p>
           </div>
 
-          <textarea
-            id="brain-dump-input"
-            className="textarea brain-dump-textarea"
-            value={sourceText}
-            onChange={(event) => setSourceText(event.target.value)}
-            placeholder="Example: call dentist, email client back, groceries, why am I avoiding the invoice, idea for Takota, refill meds..."
-          />
+          <div className="brain-dump-capture">
+            <textarea
+              id="brain-dump-input"
+              className="textarea brain-dump-textarea"
+              value={sourceText}
+              onChange={(event) => setSourceText(event.target.value)}
+              placeholder="Example: call dentist, email client back, groceries, why am I avoiding the invoice, idea for Takota, refill meds..."
+            />
+            <button
+              type="button"
+              className={`brain-dump-mic ${isListening ? "is-listening" : ""}`}
+              onClick={() => void toggleVoiceCapture()}
+              aria-label={isListening ? "Stop voice input" : "Start voice input"}
+              aria-pressed={isListening}
+              title={isListening ? "Stop voice input" : "Speak your Brain Dump"}
+            >
+              <span aria-hidden="true">🎙️</span>
+            </button>
+          </div>
 
           <div className="brain-dump-actions">
             <button className="btn primary" onClick={() => void untangle()} disabled={!sourceText.trim() || isSorting}>
               {isSorting ? "Sorting..." : "Sort it for me"}
             </button>
-            {speechCtor ? (
-              <button
-                className={`btn ${isListening ? "primary" : ""}`}
-                onClick={() => setIsListening((current) => !current)}
-                aria-pressed={isListening}
-              >
-                {isListening ? "Stop talking" : "Start talking"}
-              </button>
-            ) : null}
             <button
               className="btn"
               onClick={() => {
