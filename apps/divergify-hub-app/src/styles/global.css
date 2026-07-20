@@ -706,6 +706,57 @@ details[open] summary { margin-bottom: 8px; }
 
 .brain-dump-textarea {
   min-height: 300px;
+  padding-right: 68px;
+}
+
+.brain-dump-capture {
+  position: relative;
+}
+
+.brain-dump-capture .brain-dump-textarea {
+  width: 100%;
+}
+
+.brain-dump-mic {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--panel-strong);
+  color: var(--text);
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.brain-dump-mic:hover {
+  transform: translateY(-1px) scale(1.03);
+  border-color: var(--accent);
+}
+
+.brain-dump-mic:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.brain-dump-mic.is-listening {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 22%, var(--panel-strong));
+  animation: brain-dump-mic-pulse 1.25s ease-in-out infinite;
+}
+
+@keyframes brain-dump-mic-pulse {
+  50% {
+    transform: scale(1.08);
+  }
 }
 
 .brain-dump-actions {
