@@ -168,7 +168,7 @@ The app points to:
 
 - `https://divergify.app/privacy.html`
 - `https://divergify.app/contact.html`
-- `chaoscontrol@divergify.app`
+- `divergifyapp@proton.me`
 
 Before submission, those public endpoints need to be live, accurate, and checked from the release build.
 
