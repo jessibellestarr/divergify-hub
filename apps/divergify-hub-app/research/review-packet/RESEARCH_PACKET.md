@@ -75,7 +75,7 @@ Review these first:
 The app currently points users to:
 
 - Privacy policy: `https://divergify.app/privacy.html`
-- Support email: `chaoscontrol@divergify.app`
+- Support email: `divergifyapp@proton.me`
 - Contact page: `https://divergify.app/contact.html`
 
 Relevant in-app privacy stance:
