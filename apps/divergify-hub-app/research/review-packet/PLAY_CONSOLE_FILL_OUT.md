@@ -28,7 +28,7 @@ Use the current text in `PLAY_STORE_COPY.md`.
 
 Contact details:
 
-- Contact email: `chaoscontrol@divergify.app`
+- Contact email: `divergifyapp@proton.me`
 - Website: `https://divergify.app`
 - Privacy policy URL: `https://divergify.app/privacy.html`
 
