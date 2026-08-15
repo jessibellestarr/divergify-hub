@@ -41,7 +41,7 @@ Condition:
 How to support that answer:
 
 - Local app data: users can reset the app in Settings or clear app storage on device.
-- Off-device support or waitlist data: users can email `chaoscontrol@divergify.app` for deletion.
+- Off-device support or waitlist data: users can email `divergifyapp@proton.me` for deletion.
 
 ### Should you rely on the "processed ephemerally" exception?
 
@@ -179,7 +179,7 @@ Reason:
 3. Confirm the public privacy policy and contact URLs open from the app.
    - `https://divergify.app/privacy.html`
    - `https://divergify.app/contact.html`
-4. Send one real support email to confirm it lands in `chaoscontrol@divergify.app`.
+4. Send one real support email to confirm it lands in `divergifyapp@proton.me`.
 5. Re-check dependencies before final submission.
    - If you add analytics, crash reporting, login, notifications, or new SDKs, this draft can change.
 
