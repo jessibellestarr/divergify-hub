@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const SUPPORT_EMAIL = "chaoscontrol@divergify.app";
+const SUPPORT_EMAIL = "divergifyapp@proton.me";
 const PRIVACY_URL = "https://divergify.app/privacy.html";
 const CONTACT_URL = "https://divergify.app/contact";
 

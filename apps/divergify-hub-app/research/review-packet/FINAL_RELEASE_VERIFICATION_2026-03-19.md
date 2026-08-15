@@ -70,7 +70,7 @@ Verified from the app code and public URLs:
 Verified from the app support route:
 
 - `Email support` points to:
-  - `mailto:chaoscontrol@divergify.app?subject=Divergify%20support`
+  - `mailto:divergifyapp@proton.me?subject=Divergify%20support`
 
 Verified at the domain level:
 

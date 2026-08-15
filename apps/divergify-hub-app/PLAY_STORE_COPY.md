@@ -37,4 +37,4 @@ Privacy:
 Support and privacy policy:
 
 - Privacy policy: https://divergify.app/privacy.html
-- Support: chaoscontrol@divergify.app
+- Support: divergifyapp@proton.me
