@@ -17,6 +17,9 @@ Recommended values:
 - App name: `Divergify`
 - Default language: `English (United States)` if that is your primary listing language
 - App category: `Productivity`
+- App pricing: `Paid`
+- US price: `$4.99`
+- Billing model: one-time app purchase; no subscription or in-app product in this release
 
 Short description:
 
@@ -40,7 +43,7 @@ Recommended answer:
 
 Reason:
 
-- The current Android app does not require login, account creation, invite code, subscription activation, or reviewer credentials to reach its core functionality.
+- The current Android app does not require login, account creation, invite code, subscription activation, or reviewer credentials after the paid Play Store download.
 
 Current evidence:
 
@@ -165,7 +168,6 @@ Suggested first release note:
 
 Do not claim these in the listing or console unless you ship them:
 
-- voice input
 - text-to-speech
 - full cloud sync
 - subscriptions
