@@ -36,8 +36,8 @@ Verified from the Android project:
 - Application ID:
   - `app.divergify.hub`
 - Version:
-  - `versionCode 2`
-  - `versionName 0.2.0`
+  - `versionCode 3`
+  - `versionName 1.0.0`
 - SDK targets:
   - `minSdkVersion 22`
   - `targetSdkVersion 35`
