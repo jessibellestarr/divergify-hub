@@ -2,7 +2,7 @@
 
 Date: 2026-03-23
 
-This note records what was verified for the current Play submission package and what still requires a physical-device pass.
+This note records what was verified for the current Play submission package and what still requires a physical-device pass. It also records the privacy-preserving product paths that remain active after 1.0: BYOK, optional token packs, and community/Discord.
 
 ## Verified
 
@@ -150,6 +150,12 @@ Still recommended:
 7. Toggle Tin Foil Hat on and off and sanity-check Sidekicks, Magic Tasks, and Lab.
 8. Test Brain Dump once with typing and once with voice capture if the device/browser exposes the speech button.
 9. Test one calendar handoff and one Waze handoff from a task with date/location data.
+
+### Product paths kept active
+
+- The local-first core remains usable without AI, an account, or community membership.
+- BYOK and token packs are optional AI paths and must remain opt-in.
+- Signal Station/Discord is a community layer, not a prerequisite for the app or a substitute for support.
 
 ### Open follow-up
 
