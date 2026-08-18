@@ -1,6 +1,6 @@
 # Google Play listing draft
 
-This draft matches the current Divergify app build. It does not claim cloud sync, subscriptions, or other work that is not fully live in this release.
+This draft matches the current Divergify app build and keeps the privacy-first funding paths visible without claiming they are already live. It does not claim cloud sync, subscriptions, or other work that is not fully live in this release.
 
 ## Price
 
@@ -48,4 +48,4 @@ Purchase terms:
 
 - One-time paid app download
 - No recurring subscription
-- Optional AI-assisted requests may be offered separately in a later release and are not included or promised by this purchase
+- Optional AI remains separate from the app purchase. When enabled, users may bring their own provider key or buy token packs; neither path is required for the local-first core. Community and Discord work will be developed alongside those privacy choices, not used to force account creation.

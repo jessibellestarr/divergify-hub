@@ -12,6 +12,12 @@ Use this together with:
 
 ## Main store listing
 
+### Product-path decision
+
+- Keep the native Android app at `$4.99 USD` one time only after confirming the existing Play listing has never been offered free.
+- If the listing was previously offered free, do not publish this package as paid; choose a new paid package or keep this listing free.
+- BYOK and token packs are optional post-1.0 AI paths. They are not required to use the local-first app and must not be described as included in the $4.99 purchase.
+
 Recommended values:
 
 - App name: `Divergify`
